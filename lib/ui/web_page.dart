@@ -1,4 +1,6 @@
+import 'package:dio_example_n6/ui/app_router.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -40,6 +42,35 @@ class _WebPageState extends State<WebPage> {
   Widget build(BuildContext context) {
     return KeyboardDismisser(
       child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios_outlined,
+              color: Color.fromARGB(255, 21, 18, 32),
+            ),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, RouteName.image);
+              },
+              icon: const Icon(
+                Icons.arrow_forward_ios_outlined,
+                color: Color.fromARGB(255, 21, 18, 32),
+              ),
+            )
+          ],
+          title: Text(
+            "Web",
+            style: GoogleFonts.raleway(
+                color: const Color.fromARGB(255, 21, 18, 32)),
+          ),
+          backgroundColor: Colors.white,
+          elevation: 0,
+        ),
         body: SafeArea(
           child: Expanded(
             child: SizedBox(

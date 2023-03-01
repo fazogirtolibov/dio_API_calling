@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:dio_example_n6/data/api/api_client.dart';
 import 'package:dio_example_n6/data/models/category_model.dart';
+import 'package:dio_example_n6/data/models/dynamic_model.dart';
 import 'package:dio_example_n6/data/models/transaction_model.dart';
 
 class MyResponse {
@@ -16,7 +17,7 @@ class ApiService extends ApiClient {
       print("Response");
       Response response =
           await dio.get("${dio.options.baseUrl}/transactions-expenses");
-      if (response.statusCode == 200) {
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
         myResponse.data = (response.data as List?)
                 ?.map((e) => TransactionModel.fromJson(e))
                 .toList() ??
@@ -33,7 +34,7 @@ class ApiService extends ApiClient {
     try {
       print("Response");
       Response response = await dio.get("${dio.options.baseUrl}/income-types");
-      if (response.statusCode == 200) {
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
         myResponse.data = (response.data as List?)
                 ?.map((e) => CategoryModel.fromJson(e))
                 .toList() ??
@@ -41,6 +42,21 @@ class ApiService extends ApiClient {
       }
     } catch (e) {
       myResponse.error = e.toString();
+    }
+    return myResponse;
+  }
+
+  Future<MyResponse> getDynamic() async {
+    MyResponse myResponse = MyResponse(error: "");
+    try {
+      print("Response");
+      Response response =
+          await dio.get("https://dynamic-view-api.free.mockoapp.net/dynamic");
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
+        myResponse.data = Dynamic.fromJson(response.data);
+      }
+    } catch (err) {
+      myResponse.error = err.toString();
     }
     return myResponse;
   }
